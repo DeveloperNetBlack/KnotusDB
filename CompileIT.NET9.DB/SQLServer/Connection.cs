@@ -179,7 +179,7 @@ namespace CompileIT.NET9.DB.SQLServer
         {
             get
             {
-                string? valorConnection = _configuration.GetConnectionString("ConnectionSQLServer");
+                string? valorConnection = _configuration.GetSection("ConnectionStrings")["ConnectionSQLServer"];
                 return Security.Decrypt(valorConnection, "SQLServer");
                 
             }
