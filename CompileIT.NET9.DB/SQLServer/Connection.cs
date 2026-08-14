@@ -1,14 +1,8 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CompileIT.NET9.DB.SQLServer
 {
@@ -181,7 +175,7 @@ namespace CompileIT.NET9.DB.SQLServer
             {
                 string? valorConnection = _configuration.GetSection("ConnectionStrings")["ConnectionSQLServer"];
                 return Security.Decrypt(valorConnection, "SQLServer");
-                
+
             }
         }
 

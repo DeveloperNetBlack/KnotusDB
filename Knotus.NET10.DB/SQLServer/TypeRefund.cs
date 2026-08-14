@@ -1,4 +1,4 @@
-﻿namespace CompileIT.NET9.DB.SQLServer
+﻿namespace Knotus.NET10.DB.SQLServer
 {
     public class TypeRefund
     {
