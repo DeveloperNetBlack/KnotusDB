@@ -59,7 +59,7 @@ namespace Knotus.NET10.DB.SQLServer
             get
             {
                 string? valorConnection = _configuration.GetSection("ConnectionStrings")["ConnectionSQLServer"];
-                return Security.Decrypt(valorConnection, "SQLServer");
+                return Security.Decrypt(valorConnection, _configuration["Security:ConnectionStringPassphrase"]);
             }
         }
 
