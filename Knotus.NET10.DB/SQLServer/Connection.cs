@@ -1,6 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using System.Collections;
 using System.Collections.Concurrent;
 using System.Data;
 using System.Reflection;
@@ -273,7 +272,7 @@ namespace Knotus.NET10.DB.SQLServer
 
         private static T ConvertDataRowEntidad(DataRow drFila, Dictionary<string, PropertyInfo> mapaPropiedades)
         {
-            T objInstancia = new T();
+            object objInstancia = new T()!; // boxea UNA sola vez; los SetValue posteriores modifican esta misma caja
 
             foreach (DataColumn dcColumna in drFila.Table.Columns)
             {
@@ -292,7 +291,7 @@ namespace Knotus.NET10.DB.SQLServer
                 pPropiedad.SetValue(objInstancia, objValor, null);
             }
 
-            return objInstancia;
+            return (T)objInstancia;
         }
 
         #endregion
