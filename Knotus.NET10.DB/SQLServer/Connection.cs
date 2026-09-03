@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using System.Collections.Concurrent;
 using System.Data;
 using System.Reflection;
+using System.Text.Json;
 
 namespace Knotus.NET10.DB.SQLServer
 {
@@ -272,7 +273,7 @@ namespace Knotus.NET10.DB.SQLServer
 
         private static T ConvertDataRowEntidad(DataRow drFila, Dictionary<string, PropertyInfo> mapaPropiedades)
         {
-            object objInstancia = new T()!; // boxea UNA sola vez; los SetValue posteriores modifican esta misma caja
+            object objInstancia = new T()!;
 
             foreach (DataColumn dcColumna in drFila.Table.Columns)
             {
@@ -286,6 +287,16 @@ namespace Knotus.NET10.DB.SQLServer
                 if (objValor == DBNull.Value)
                 {
                     objValor = null;
+                }
+                else if (objValor is string strValor
+                         && pPropiedad.PropertyType != typeof(string)
+                         && (strValor.TrimStart().StartsWith('[') || strValor.TrimStart().StartsWith('{')))
+                {
+                    // La columna viene como JSON (ej. FOR JSON PATH) y la propiedad destino es un tipo complejo (List<T>, objeto, etc.)
+                    objValor = JsonSerializer.Deserialize(strValor, pPropiedad.PropertyType, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
                 }
 
                 pPropiedad.SetValue(objInstancia, objValor, null);
